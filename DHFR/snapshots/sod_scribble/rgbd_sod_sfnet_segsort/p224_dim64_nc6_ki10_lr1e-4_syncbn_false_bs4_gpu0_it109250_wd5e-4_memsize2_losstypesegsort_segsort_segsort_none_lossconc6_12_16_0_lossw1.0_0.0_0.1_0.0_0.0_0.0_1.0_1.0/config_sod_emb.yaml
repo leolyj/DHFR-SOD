@@ -1,0 +1,72 @@
+---
+gpus: "0"
+num_threads: 12
+dataset:
+  num_classes: 2
+  semantic_ignore_index: 255
+  dataset: sod
+  data_dir: "DATA_ROOT"
+  train_data_list: "TRAIN_DATA_LIST"
+  test_data_list: "TEST_DATA_LIST"
+  color_map_path: "misc/colormapvoc.mat"
+
+network:
+  pretrained: ""
+  embedding_dim: 64
+  label_divisor: 2048
+  use_syncbn: false
+  kmeans_iterations: 10
+  kmeans_num_clusters:
+    - 6
+    - 6
+  backbone_types: rgbd_sod_sfnet
+  prediction_types: segsort
+
+train:
+  resume: false
+  lr_policy: poly
+  begin_iteration: 0
+  snapshot_step: 21850
+  tensorboard_step: 100
+  max_iteration: 109250
+  random_mirror: true
+  random_scale: true
+  random_crop: true
+  warmup_iteration: 1000
+  base_lr: 1e-4
+  weight_decay: 5e-4
+  momentum: 0.9
+  decay_rate: 0.1
+  decay_epoch: 60
+  batch_size: 4
+  crop_size:
+    - 224
+    - 224
+  memory_bank_size: 2
+  sem_ann_concentration: 6
+  sem_occ_concentration: 12
+  img_sim_concentration: 16
+  feat_aff_concentration: 0
+  sem_ann_loss_types: segsort
+  sem_occ_loss_types: segsort
+  img_sim_loss_types: segsort
+  feat_aff_loss_types: none
+  sem_ann_loss_weight: 1.0
+  sem_occ_loss_weight: 0.0
+  img_sim_loss_weight: 0.1
+  feat_aff_loss_weight: 0.0
+  feat_crf_loss_weight: 0.0
+  l1_crf_loss_weight: 0.0
+  parted_ce_loss_weight: 1.0
+  ssc_loss_weight: 1.0
+
+test:
+  scales:
+    - 1
+  image_size: 224
+  crop_size:
+    - 224
+    - 224
+  stride:
+    - 224
+    - 224
